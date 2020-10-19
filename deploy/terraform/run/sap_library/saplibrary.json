@@ -4,7 +4,7 @@
         "environment": "np"
     },
     "deployer": {
-        "environment": "adm",
+        "environment": "np",
         "region": "eastus",
         "vnet": "MGMT"
     },
