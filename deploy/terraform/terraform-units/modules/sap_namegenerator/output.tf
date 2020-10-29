@@ -50,5 +50,7 @@ output naming {
       WEB_VMNAME          = local.web_server_vm_names
     }
     resource_suffixes = var.resource_suffixes
+
+    separator = local.separator
   }
 }
