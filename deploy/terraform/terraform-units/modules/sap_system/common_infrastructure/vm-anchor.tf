@@ -1,9 +1,3 @@
-data "azurerm_subnet" "anchor" {
-  count                = local.deploy_anchor && local.sub_admin_exists ? 1 : 0
-  name                 = split("/", local.sub_admin_arm_id)[10]
-  resource_group_name  = split("/", local.sub_admin_arm_id)[4]
-  virtual_network_name = split("/", local.sub_admin_arm_id)[8]
-}
 
 # Create Anchor VM
 resource "azurerm_network_interface" "anchor" {
@@ -15,7 +9,7 @@ resource "azurerm_network_interface" "anchor" {
 
   ip_configuration {
     name                          = "IPConfig1"
-    subnet_id                     = data.azurerm_subnet.anchor[0].id
+    subnet_id                     = local.sub_admin_exists ? data.azurerm_subnet.admin[0].id : azurerm_subnet.admin[0].id
     private_ip_address            = try(local.anchor.nic_ips[count.index], cidrhost(data.azurerm_subnet.anchor[0].address_prefixes[0], (count.index + 5)))
     private_ip_address_allocation = "static"
   }
