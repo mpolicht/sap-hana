@@ -83,7 +83,7 @@ locals {
   var_infra = try(var.infrastructure, {})
 
   //Anchor VM
-  
+
   anchor                = try(local.var_infra.anchor_vms, {})
   deploy_anchor         = length(local.anchor) > 0 ? true : false
   anchor_size           = try(local.anchor.sku, "Standard_D8s_v3")
@@ -99,7 +99,7 @@ locals {
     "version"         = try(local.anchor.os.version, local.anchor_custom_image ? "" : local.db_os.version)
   }
 
-  anchor_ostype           = upper(try(local.anchor.os.os_type, local.db_ostype))
+  anchor_ostype = upper(try(local.anchor.os.os_type, local.db_ostype))
 
   //Resource group
   var_rg    = try(local.var_infra.resource_group, {})
@@ -116,7 +116,7 @@ locals {
   //iSCSI
   var_iscsi = try(local.var_infra.iscsi, {})
 
-  enable_admin_subnet = try(var.application.dual_nics, false) || try(var.databases[0].dual_nics, false) || length(local.hana-databases) > 0
+  enable_admin_subnet = try(var.application.dual_nics, false) || try(var.databases[0].dual_nics, false) || (upper(local.db.platform) == "HANA")
 
   //iSCSI target device(s) is only created when below conditions met:
   //- iscsi is defined in input JSON
